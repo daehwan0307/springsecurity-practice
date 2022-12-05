@@ -5,6 +5,7 @@ import com.example.springsecurityex.exception.AppException;
 import com.example.springsecurityex.exception.ErrorCode;
 import com.example.springsecurityex.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final BCryptPasswordEncoder encoder;
     public String join(String userName, String password){
         //userName 중복  check
         userRepository.findByUserName(userName)
@@ -23,7 +24,7 @@ public class UserService {
         //저장
         User user = User.builder()
                 .userName(userName)
-                .password(password)
+                .password(encoder.encode(password))
                 .build();
         userRepository.save(user);
 
