@@ -1,6 +1,8 @@
 package com.example.springsecurityex.service;
 
 import com.example.springsecurityex.domain.User;
+import com.example.springsecurityex.exception.AppException;
+import com.example.springsecurityex.exception.ErrorCode;
 import com.example.springsecurityex.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ public class UserService {
         //userName 중복  check
         userRepository.findByUserName(userName)
                 .ifPresent(user-> {
-                    throw new RuntimeException(userName + "는 이미 있습니다.");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, userName + "는 이미 있습니다.");
                 });
 
         //저장
